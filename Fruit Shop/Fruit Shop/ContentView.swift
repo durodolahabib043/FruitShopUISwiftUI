@@ -11,24 +11,24 @@ struct ContentView: View {
     var body: some View {
         ZStack {
             Color.black.opacity(0.8).ignoresSafeArea()
-            
-            VStack {
-                /// Part 01
-                Header()
-                OfferProductCard()
-                
-                /// Part 02
-                CategoryTextHeader()
-                ProductList()
-                
-                Spacer()
-                BottomTabBar()
-            }
-            .padding()
-           
+                VStack {
+                    /// Part 01
+                    Header()
+                    OfferProductCard()
+                    
+                    /// Part 02
+                    CategoryTextHeader()
+                    ProductList()
+                    
+                    Spacer()
+                    BottomTabBar()
+                }
+                .padding()
         }
         
     }
+    
+
     
     @ViewBuilder
     private func Header() -> some View {
@@ -134,9 +134,11 @@ struct ContentView: View {
     
     @ViewBuilder
     private func ProductList() -> some View {
-        HStack {
-            ForEach(fruits, id: \.id) { fruit in
-                ProductCard(fruit: fruit)
+        ScrollView(.horizontal) {
+            HStack {
+                ForEach(fruits, id: \.id) { fruit in
+                    ProductCard(fruit: fruit)
+                }
             }
         }
     }
@@ -146,7 +148,7 @@ struct ContentView: View {
         Button(action: {}, label: {
             
             RoundedRectangle(cornerRadius: 0)
-                .frame(height: 300)
+                .frame(width: 200, height: 300)
                 .overlay {
                     VStack {
                         Rectangle()
@@ -202,12 +204,17 @@ struct ContentView: View {
                     }
                 }
                 .clipShape(
-                    .rect(
-                        topLeadingRadius: 100,
-                        bottomLeadingRadius: 10,
-                        bottomTrailingRadius: 10,
-                        topTrailingRadius: 100
-                    )
+                    Rectangle()
+                    /*
+                     .rect(
+                         topLeadingRadius: 100,
+                         bottomLeadingRadius: 10,
+                         bottomTrailingRadius: 10,
+                         topTrailingRadius: 100
+                     )
+                     */
+                    
+             
                 )
             
             
@@ -253,10 +260,12 @@ struct ContentView: View {
     }
     
 }
-
-#Preview {
-    ContentView()
+struct ContentView_Previews: PreviewProvider {
+    static var previews: some View {
+        ContentView()
+    }
 }
+
 
 struct Fruit: Identifiable {
     let id = UUID()
@@ -269,6 +278,7 @@ struct Fruit: Identifiable {
 var fruits = [
     Fruit(name: "Apple", imageName: "apple", price: "6.25", reviews: "121"),
     Fruit(name: "Mango", imageName: "mango", price: "3.25", reviews: "100"),
+    Fruit(name: "Mango", imageName: "mango", price: "3.25", reviews: "100")
 ]
 
 
@@ -297,5 +307,14 @@ enum TabItems: Int, CaseIterable{
         case .cart:
             return "cart"
         }
+    }
+}
+
+struct Star: View {
+    var color = Color.yellow
+
+    var body: some View {
+        Image(systemName: "star.fill")
+            .foregroundStyle(color)
     }
 }
